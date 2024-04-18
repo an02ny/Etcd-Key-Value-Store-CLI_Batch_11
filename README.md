@@ -22,7 +22,6 @@ This project implements a command-line interface (CLI) for interacting with the 
     cd Batch_11
     ```
 
-    ```
 
 ## Usage
 1. Run the `week2_code.py` script to start the CLI:
