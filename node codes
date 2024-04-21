@@ -1,0 +1,84 @@
+#Node 1: sudo docker run -d --net etcd-network --name etcd-node1
+    -p 12379:2379 -p 12380:2380
+    -e ETCD_DATA_DIR="/etcd-data"
+    -e ETCD_NAME="node1"    
+    -e ETCD_INITIAL_ADVERTISE_PEER_URLS="http://etcd-node1:2380"    
+    -e ETCD_LISTEN_PEER_URLS="http://0.0.0.0:2380"    
+    -e ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379"    
+    -e ETCD_ADVERTISE_CLIENT_URLS="http://etcd-node1:2379"    
+    -e ETCD_INITIAL_CLUSTER="node1=http://etcd-node1:2380,node2=http://etcd-node2:2380,node3=http://etcd-node3:2380"    
+    -e ETCD_INITIAL_CLUSTER_STATE="new"    
+    -e ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-1"    
+    etcd-python
+    
+0b913b8f771ac807b99c1967b867360aeff40f7a7211a005191a9ead367bc543
+
+
+sudo docker run -d --net etcd-network --name etcd-node1 \
+   -p 12379:2379 -p 12380:2380 \
+   -e ETCD_DATA_DIR="/etcd-data" \
+   -e ETCD_NAME="node1" \
+   -e ETCD_INITIAL_ADVERTISE_PEER_URLS="http://etcd-node1:2380" \
+   -e ETCD_LISTEN_PEER_URLS="http://0.0.0.0:2380" \
+   -e ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379" \
+   -e ETCD_ADVERTISE_CLIENT_URLS="http://etcd-node1:2379" \
+   -e ETCD_INITIAL_CLUSTER="node1=http://etcd-node1:2380,node2=http://etcd-node2:2380,node3=http://etcd-node3:2380" \
+   -e ETCD_INITIAL_CLUSTER_STATE="new" \
+   -e ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-1" \
+   etcd-python python /week1_code.py
+
+
+#Node 2: sudo docker run -d --net etcd-network --name etcd-node2
+    -p 22379:2379 -p 22380:2380    -e ETCD_DATA_DIR="/etcd-data"    
+    -e ETCD_NAME="node2"    
+    -e ETCD_INITIAL_ADVERTISE_PEER_URLS="http://etcd-node2:2380"    
+    -e ETCD_LISTEN_PEER_URLS="http://0.0.0.0:2380"    
+    -e ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379"    
+    -e ETCD_ADVERTISE_CLIENT_URLS="http://etcd-node2:2379"    
+    -e ETCD_INITIAL_CLUSTER="node1=http://etcd-node1:2380,node2=http://etcd-node2:2380,node3=http://etcd-node3:2380"    
+    -e ETCD_INITIAL_CLUSTER_STATE="new"    
+    -e ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-1"    
+    etcd-python 
+297a327f493fdf4ef15bad9e69af4064a855572f4a5e82359fb4ff413ab0ab97
+
+sudo docker run -d --net etcd-network --name etcd-node2 \
+   -p 22379:2379 -p 22380:2380 \
+   -e ETCD_DATA_DIR="/etcd-data" \
+   -e ETCD_NAME="node2" \
+   -e ETCD_INITIAL_ADVERTISE_PEER_URLS="http://etcd-node2:2380" \
+   -e ETCD_LISTEN_PEER_URLS="http://0.0.0.0:2380" \
+   -e ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379" \
+   -e ETCD_ADVERTISE_CLIENT_URLS="http://etcd-node2:2379" \
+   -e ETCD_INITIAL_CLUSTER="node1=http://etcd-node1:2380,node2=http://etcd-node2:2380,node3=http://etcd-node3:2380" \
+   -e ETCD_INITIAL_CLUSTER_STATE="new" \
+   -e ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-1" \
+   etcd-python python /week1_code.py
+
+#Node 3:sudo docker run -d --net etcd-network --name etcd-node3
+    -p 32379:2379 -p 32380:2380    
+    -e ETCD_DATA_DIR="/etcd-data"    
+    -e ETCD_NAME="node3"    
+    -e ETCD_INITIAL_ADVERTISE_PEER_URLS="http://etcd-node3:2380"    
+    -e ETCD_LISTEN_PEER_URLS="http://0.0.0.0:2380"    
+    -e ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379"    
+    -e ETCD_ADVERTISE_CLIENT_URLS="http://etcd-node3:2379"    
+    -e ETCD_INITIAL_CLUSTER="node1=http://etcd-node1:2380,node2=http://etcd-node2:2380,node3=http://etcd-node3:2380"    
+    -e ETCD_INITIAL_CLUSTER_STATE="new"    
+    -e ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-1"    
+    etcd-python 
+7336d290ccf6a3b1e2ef447d2030976be2bc3143d349545c7f8114b44d0eea16
+
+
+sudo docker run -d --net etcd-network --name etcd-node3 \
+   -p 32379:2379 -p 32380:2380 \
+   -e ETCD_DATA_DIR="/etcd-data" \
+   -e ETCD_NAME="node3" \
+   -e ETCD_INITIAL_ADVERTISE_PEER_URLS="http://etcd-node3:2380" \
+   -e ETCD_LISTEN_PEER_URLS="http://0.0.0.0:2380" \
+   -e ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379" \
+   -e ETCD_ADVERTISE_CLIENT_URLS="http://etcd-node3:2379" \
+   -e ETCD_INITIAL_CLUSTER="node1=http://etcd-node1:2380,node2=http://etcd-node2:2380,node3=http://etcd-node3:2380" \
+   -e ETCD_INITIAL_CLUSTER_STATE="new" \
+   -e ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-1" \
+   etcd-python python /week1_code.py
+
