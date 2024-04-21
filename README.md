@@ -1,54 +1,100 @@
-# Etcd Key-Value Store Command Line Interface
+Sure, here's a template for your README file:
+
+---
+
+# ETCD Cluster Setup and Testing
 
 ## Overview
-This project implements a command-line interface (CLI) for interacting with the **etcd** key-value store. The CLI allows users to perform basic operations such as listing all keys, getting the value for a specific key, putting a new key-value pair, and deleting a key-value pair.
 
-## Dependencies
-- Python 3.x
-- **etcd3** library
+This project demonstrates setting up a simple ETCD cluster using Docker containers and testing key-value operations across the nodes. The cluster consists of three nodes (`etcd-node1`, `etcd-node2`, `etcd-node3`) configured to communicate with each other.
 
-## Setup
-1. Ensure you have Python 3.x installed on your system. If not, you can download and install it from the [official Python website](https://www.python.org/).
-2. Install the **etcd3** library using pip:
-    ```
-    pip install etcd3
-    ```
-3. Clone this repository to your local machine:
-    ```
-    git clone https://github.com/an02ny/Batch_11.git
-    ```
-4. Navigate to the project directory:
-    ```
-    cd Batch_11
+## Prerequisites
+
+- Docker installed on your system.
+- Basic understanding of Docker and ETCD.
+- Python 3 installed locally (for running the tests).
+
+## Setup Instructions
+
+1. Clone this repository to your local machine.
+
+2. Ensure Docker is running, and the Docker daemon is accessible.
+
+3. Navigate to the project directory in your terminal.
+
+4. Run the following commands to set up the ETCD cluster:
+
+    ```bash
+    sudo docker network create etcd-network
     ```
 
+    ```bash
+    sudo docker run -d --net etcd-network --name etcd-node1 \
+       -p 12379:2379 -p 12380:2380 \
+       -e ETCD_DATA_DIR="/etcd-data" \
+       -e ETCD_NAME="node1" \
+       -e ETCD_INITIAL_ADVERTISE_PEER_URLS="http://etcd-node1:2380" \
+       -e ETCD_LISTEN_PEER_URLS="http://0.0.0.0:2380" \
+       -e ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379" \
+       -e ETCD_ADVERTISE_CLIENT_URLS="http://etcd-node1:2379" \
+       -e ETCD_INITIAL_CLUSTER="node1=http://etcd-node1:2380,node2=http://etcd-node2:2380,node3=http://etcd-node3:2380" \
+       -e ETCD_INITIAL_CLUSTER_STATE="new" \
+       -e ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-1" \
+       etcd-python
+    ```
+
+    ```bash
+    sudo docker run -d --net etcd-network --name etcd-node2 \
+       -p 22379:2379 -p 22380:2380 \
+       -e ETCD_DATA_DIR="/etcd-data" \
+       -e ETCD_NAME="node2" \
+       -e ETCD_INITIAL_ADVERTISE_PEER_URLS="http://etcd-node2:2380" \
+       -e ETCD_LISTEN_PEER_URLS="http://0.0.0.0:2380" \
+       -e ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379" \
+       -e ETCD_ADVERTISE_CLIENT_URLS="http://etcd-node2:2379" \
+       -e ETCD_INITIAL_CLUSTER="node1=http://etcd-node1:2380,node2=http://etcd-node2:2380,node3=http://etcd-node3:2380" \
+       -e ETCD_INITIAL_CLUSTER_STATE="new" \
+       -e ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-1" \
+       etcd-python
+    ```
+
+    ```bash
+    sudo docker run -d --net etcd-network --name etcd-node3 \
+       -p 32379:2379 -p 32380:2380 \
+       -e ETCD_DATA_DIR="/etcd-data" \
+       -e ETCD_NAME="node3" \
+       -e ETCD_INITIAL_ADVERTISE_PEER_URLS="http://etcd-node3:2380" \
+       -e ETCD_LISTEN_PEER_URLS="http://0.0.0.0:2380" \
+       -e ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379" \
+       -e ETCD_ADVERTISE_CLIENT_URLS="http://etcd-node3:2379" \
+       -e ETCD_INITIAL_CLUSTER="node1=http://etcd-node1:2380,node2=http://etcd-node2:2380,node3=http://etcd-node3:2380" \
+       -e ETCD_INITIAL_CLUSTER_STATE="new" \
+       -e ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-1" \
+       etcd-python
+    ```
+
+5. Once the containers are running, you can interact with the cluster using the provided Python scripts.
 
 ## Usage
-1. Run the `week2_code.py` script to start the CLI:
-    ```
-    python3 week2_code.py
-    ```
-2. The CLI will display a list of options:
-    ```
-    Options:
-    1. List all keys
-    2. Get value for a specific key
-    3. Put a new key-value pair
-    4. Delete a key-value pair
-    5. Exit
-    Enter option number:
-    ```
-3. Enter the option number to perform the desired operation.
-4. Follow the prompts to input key or value information as required.
 
-## Functionality
-- **List all keys**: Displays a list of all keys present in the **etcd** key-value store.
-- **Get value for a specific key**: Allows the user to retrieve the value associated with a specific key.
-- **Put a new key-value pair**: Adds a new key-value pair to the **etcd** key-value store.
-- **Delete a key-value pair**: Deletes a key-value pair from the **etcd** key-value store.
+- To list all keys: `sudo docker exec -it etcd-node1 python /week1_code.py`
+- To get the value for a specific key: `sudo docker exec -it etcd-node1 python /week1_code.py`
+- To put a new key-value pair: `sudo docker exec -it etcd-node1 python /week1_code.py`
+- To run unit tests: `sudo docker exec -it etcd-node3 python /week3_unit_tests.py`
 
-## Contributing
-Contributions are welcome! If you have any suggestions or find any issues, please open an issue or create a pull request on GitHub.
+## Cleanup
 
-## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+To stop and remove the Docker containers:
+
+```bash
+sudo docker stop etcd-node1 etcd-node2 etcd-node3
+sudo docker rm etcd-node1 etcd-node2 etcd-node3
+```
+
+## Notes
+
+- Make sure to adjust the container names, ports, and environment variables according to your setup.
+- The provided Python scripts assume a specific ETCD setup. Modify them as needed for your environment.
+
+---
+
